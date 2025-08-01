@@ -23,11 +23,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
         SELECT u, 
-               (SELECT COUNT(ui1.interest) 
+               (SELECT COUNT(ui1) 
                 FROM User u1 
                 JOIN u1.interests ui1 
                 WHERE u1.id = :currentUserId 
-                AND ui1 IN (SELECT ui2.interest FROM User u2 JOIN u2.interests ui2 WHERE u2.id = u.id)) as sharedInterests
+                AND ui1 IN (SELECT ui2 FROM User u2 JOIN u2.interests ui2 WHERE u2.id = u.id)) as sharedInterests
         FROM User u 
         WHERE u.id != :currentUserId
         ORDER BY sharedInterests DESC
